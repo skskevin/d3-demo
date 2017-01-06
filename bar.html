@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3-柱形图</title>
+  <link href="css/d3.css" rel="stylesheet">
+</head>
+<body>
+  <div class="control-group">
+      <button onclick="update()">Update</button>
+  </div>
+
+</body>
+<script src="js/jquery.min.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.tip.v0.6.3.js"></script>
+<script type="text/javascript" src="js/d3.bar.js"></script>
+<script type="text/javascript">
+  var setting = {
+    target: "body",
+    width: 800
+  };
+
+  function randomData() {
+      return Math.random() * 9;
+  }
+
+  function update() {
+      data.length = 0;
+      for (var j = 0; j < numberOfDataPoint; ++j)
+          data.push({x: j, y: randomData()});    
+
+      chart.render();
+  }
+
+  var numberOfDataPoint = 31,
+      data = [];
+
+  data = d3.range(numberOfDataPoint).map(function (i) {
+      return {x: i, y: randomData()};
+  });
+
+  var chart = barChart(setting)
+          .x(d3.scale.linear().domain([-1, 32]))
+          .y(d3.scale.linear().domain([0, 10]));
+
+  chart.setSeries(data);
+
+  chart.render();   
+  chart.tooltip('white'); //需要先引用js：d3.tip.v0.6.3.js
+</script>
+</html>

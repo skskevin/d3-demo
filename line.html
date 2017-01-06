@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3-折线图</title>
+  <link href="css/d3.css" rel="stylesheet">
+</head>
+<body>
+  <div class="control-group">
+      <button onclick="update()">Update</button>
+  </div>
+</body>
+<script src="js/jquery.min.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script type="text/javascript" src="js/d3.line.js"></script>
+<script type="text/javascript">
+  var setting = {
+    target: "body",
+    width: 800
+  };
+
+  function randomData() {
+        return Math.random() * 9;
+    }
+   
+  function update() {
+      for (var i = 0; i < data.length; ++i) {
+          var series = data[i];
+          series.length = 0;
+          for (var j = 0; j < numberOfDataPoint; ++j)
+              series.push({x: j, y: randomData()});
+      }
+      
+      console.log(data);
+      chart.render();
+  }
+  
+  var numberOfSeries = 2,
+      numberOfDataPoint = 11,
+      data = [];
+
+  for (var i = 0; i < numberOfSeries; ++i)
+      data.push(d3.range(numberOfDataPoint).map(function (i) {
+          return {x: i, y: randomData()};
+      }));
+
+
+  var chart = lineChart(setting)
+          .x(d3.scale.linear().domain([0, 10]))
+          .y(d3.scale.linear().domain([0, 10]));
+
+  data.forEach(function (series, i) {
+      name = "line_"+i;
+      chart.addLegendLabels(name);
+      chart.addSeries(series);
+  });
+
+  chart.render();
+
+</script>
+</html>

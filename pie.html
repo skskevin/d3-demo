@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3-饼图</title>
+  <link href="css/d3.css" rel="stylesheet">
+</head>
+<body>
+  <div class="control-group">
+      <button onclick="update()">Update</button>
+  </div>
+</body>
+<script src="js/jquery.min.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script src="js/d3.pie.js"></script>
+<script type="text/javascript">
+  var setting = {
+    target: "body",
+  };
+  function randomData() {
+      return Math.random() * 9 + 1;
+  }
+
+  function update() {
+      for (var j = 0; j < data.length; ++j)
+          data[j].value = randomData();
+
+      chart.render();
+  }
+
+  var numberOfDataPoint = 6,
+          data = [];
+
+  data = d3.range(numberOfDataPoint).map(function (i) {
+      label = 'item_' + i;
+      return {label: label, value: parseInt(randomData())};
+  });
+  legendLabels = ['aa','bb','cc','dd','ee','ff'];
+  var chart = pieChart(setting)
+          .radius(200)
+          .innerRadius(0)
+          .data(data);
+
+  legendLabels.forEach(function (label, i) {
+      chart.addLegendLabels(label);
+  });
+  
+  chart.render();
+</script>
+
+</html>
