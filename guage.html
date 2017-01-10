@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=320" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<title>D3-仪表盘</title>
+	<script type="text/javascript" src="js/d3.v3.min.js"></script>
+	<style>
+	body {
+		font-family:  Helvetica, Arial, sans-serif;
+		margin: 32px;
+	}
+
+	#power-gauge g.arc {
+		fill: steelblue;
+	}
+
+	#power-gauge g.pointer {
+		fill: #e85116;
+		stroke: #b64011;
+	}
+	
+	#power-gauge g.label text {
+		text-anchor: middle;
+		font-size: 14px;
+		font-weight: bold;
+		fill: #666;
+	}
+	</style>
+</head>
+<body>
+<div id="power-gauge"></div>
+<script src="js/jquery.min.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script type="text/javascript" src="js/d3.guage.js"></script>
+<script type="text/javascript">
+  var setting={
+     target: "#power-gauge",
+     width: 300,
+     height: 300,
+     ringWidth: 60,
+     maxValue: 100,
+     minAngle: -90,
+     maxAngle: 90,
+     transitionMs: 4000,
+  };
+  var data = Math.random() * 100;
+
+  var chart = guageChart(setting)
+          .data(data);
+	
+  chart.render();
+	           
+	function refresh() {
+		// just pump in random data here...
+		chart.update(Math.random() * 100);
+	}
+	
+	// every few seconds update reading values
+	setInterval(function() {
+		refresh();
+	}, 5 * 1000);
+
+</script>
+</body>
+</html>
