@@ -281,3 +281,24 @@ button {
   top: 100%;
   left: 0;
 }
+
+#power-gauge{
+  margin: 32px;
+  font-family:  Helvetica, Arial, sans-serif;
+}
+#power-gauge g.arc {
+  fill: red;
+}
+
+#power-gauge g.pointer {
+  fill: #e85116;
+  stroke: #b64011;
+}
+
+#power-gauge g.label text {
+  text-anchor: middle;
+  font-size: 14px;
+  font-weight: bold;
+  fill: #666;
+}
+
