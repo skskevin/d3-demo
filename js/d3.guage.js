@@ -134,12 +134,20 @@ function guageChart(param){
       chart.update(data);        
   }
 
+  function xStart() {
+      return setting.margin_left + radius;
+  }
+
+  function yStart() {
+      return setting.margin_top  + radius;
+  }
+
   function deg2rad(deg) {
     return deg * Math.PI / 180;
   }
   
   function centerTranslation() {
-    return 'translate('+radius +','+ radius +')';
+    return 'translate('+ xStart() +','+ yStart() +')';
   }
   
   chart.update = function(data) {

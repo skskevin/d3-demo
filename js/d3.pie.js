@@ -176,7 +176,7 @@ function pieChart(param){
   }
 
   function yStart() {
-      return setting.margin_left  + setting.radius;
+      return setting.margin_top  + setting.radius;
   }
 
   chart.width = function (w) {
