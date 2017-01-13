@@ -11,6 +11,7 @@ function pieChart(param){
     margin_left: 30,
     radius: 200,
     innerRadius: 0,
+    font_color: "black",
     colors: d3.scale.category10() 
   };
   
@@ -26,7 +27,6 @@ function pieChart(param){
       right: setting.margin_right, 
       bottom: setting.margin_bottom
   };
-  
   chart.render = function () { // <-2A
       if (!svg) {
           svg = d3.select(setting.target)
@@ -152,7 +152,7 @@ function pieChart(param){
           .data(legendLabels)
           .enter().append("g")
           .attr("transform", function(d,i){
-            return "translate(" + (setting.width - setting.width/10) + "," + (i * 20 + 20) + ")";
+            return "translate(" + (setting.width / 2 + setting.radius + 10) + "," + (i * 20 + 20) + ")";
           })
           .attr("class", "legend");   
         
@@ -167,13 +167,14 @@ function pieChart(param){
             return d;
           })
           .style("font-size", 12)
+          .attr("fill", setting.font_color)
           .attr("y", 13)
           .attr("x", 20);
   }
 
   
   function xStart() {
-      return setting.margin_left + setting.radius;
+      return setting.width/2;
   }
 
   function yStart() {
@@ -194,7 +195,7 @@ function pieChart(param){
 
   chart.colors = function (c) {
       if (!arguments.length) return setting.colors;
-      setting.colors = c;
+      setting.colors = d3.scale.ordinal().range(c);
       return chart;
   };
 
