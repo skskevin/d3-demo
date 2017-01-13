@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3-折线图</title>
+  <link href="css/d3.css" rel="stylesheet">
+  <style type="text/css">
+  	#preview {
+  	  background: #f9f9f9; position: relative;
+  	  color: #fff;
+  	  float: left;
+  	  width: 280px;
+  	  height: 280px;
+  	  margin: 0 20px 20px 0;
+  	  -webkit-border-radius: 10px;
+  	  -moz-border-radius: 10px;
+  	  border-radius: 10px;
+  	  clear: both;
+  	}
+  	#canvas-preview{
+  	  width: 280px; top: 100px;
+  	  position: relative;
+  	}
+  	#preview-textfield{
+  	  position: absolute; top: 65px; left: 0; right: 0;
+  	  text-align: center; font-size: 2em; font-weight: bold;
+  	  color: black; font-family: 'Amaranth', sans-serif;
+  	}
+  </style>
+</head>
+<body>
+  <div id="preview">
+  	<canvas width=240 height=70 id="canvas-preview"></canvas>
+  	<div id="preview-textfield"></div>
+  </div>
+</body>
+<script src="js/jquery.min.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script type="text/javascript" src="js/gauge.coffee.js"></script>
+<script type="text/javascript">
+	var opts = {
+	  lines: 12, // The number of lines to draw
+	  angle: 0.15, // The span of the gauge arc
+	  lineWidth: 0.44, // The line thickness
+	  pointer: {
+	    length: 0.9, // The radius of the inner circle
+	    strokeWidth: 0.035, // The thickness
+	    color: '#000000' // Fill color
+	  },
+	  limitMax: false,     // If true, the pointer will not go past the end of the gauge
+	  colorStart: '#6FADCF',   // Colors
+	  colorStop: '#8FC0DA',    // just experiment with them
+	  strokeColor: '#E0E0E0',  // to see which ones work best for you
+	  generateGradient: true,
+	  highDpiSupport: true     // High resolution support
+	};
+	var target = document.getElementById('canvas-preview'); // your canvas element
+	var gauge = new Gauge(target).setOptions(opts); // create sexy gauge!
+	gauge.setTextField(document.getElementById("preview-textfield"));
+	gauge.maxValue = 3000; // set max gauge value
+	gauge.animationSpeed = 32; // set animation speed (32 is default value)
+	gauge.set(1250); // set actual value
+	
+</script>
+</html>
