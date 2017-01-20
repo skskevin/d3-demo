@@ -15,7 +15,7 @@ function barChart(param){
   $.extend(setting, param);
   
   var chart = {};
-  var _x, _y, svg, bodyG;
+  var _x, _y, svg, bodyG, xScale, yScale;
   var data = [];
   var margins = {
       top: setting.margin_top, 
@@ -23,6 +23,8 @@ function barChart(param){
       right: setting.margin_right, 
       bottom: setting.margin_bottom
   };
+  //矩形宽度
+  var rectWidth = 35;
   
   chart.render = function () { // <-2A
       if (!svg) {
@@ -47,9 +49,15 @@ function barChart(param){
   }
 
   function renderXAxis(axesG){
+    //x轴的比例尺
+    xScale = d3.scale.ordinal()
+      .domain(data.x)
+      .rangeRoundBands([0, quadrantWidth()]);
+
     var xAxis = d3.svg.axis()
-                     .scale(_x.range([0, quadrantWidth()]))
-                     .orient("bottom"); 
+                      .scale(xScale)
+                      .orient("bottom");
+    
     axesG.append("g")
         .attr("class", "x axis")
         .attr("transform", function () {
@@ -59,9 +67,14 @@ function barChart(param){
   }
   
   function renderYAxis(axesG){
+      //y轴的比例尺
+      yScale = d3.scale.linear()
+        .domain([0,d3.max(data.y)])
+        .range([quadrantHeight(), 0]);
+
       var yAxis = d3.svg.axis()
-                       .scale(_y.range([quadrantHeight(), 0]))
-                       .orient("left");
+        .scale(yScale)
+        .orient("left");
               
       axesG.append("g")
           .attr("class", "y axis")
@@ -105,29 +118,23 @@ function barChart(param){
   }
 
   function renderBars() {
-      var padding = 2; // <-A
-      
+      var padding = rectPadding(); // <-A
       bodyG.selectAll("rect.bar")
-                  .data(data)
+                  .data(data.y)
               .enter()
               .append("rect") // <-B
-              .attr("class", "bar");
-
-      bodyG.selectAll("rect.bar")
-                  .data(data)                    
+              .attr("class", "bar")                   
               .transition()
-              .attr("x", function (d) { 
-                  return _x(d.x); // <-C
+              .attr("x", function (d,i) {
+                  return xScale(data.x[i]) + padding/2;
               })
               .attr("y", function (d) { 
-                  return _y(d.y); // <-D 
+                  return yScale(d);
               })
               .attr("height", function (d) { 
-                  return yStart() - _y(d.y); 
+                  return yStart() - yScale(d); 
               })
-              .attr("width", function(d){
-                  return Math.floor(quadrantWidth() / data.length) - padding;
-              });
+              .attr("width", rectWidth);
               
   }
   
@@ -155,6 +162,10 @@ function barChart(param){
       return setting.height - margins.top - margins.bottom;
   }
 
+  function rectPadding(){
+      return (quadrantWidth() - rectWidth * data.y.length) / data.y.length
+  }
+
   chart.width = function (w) {
       if (!arguments.length) return setting.width;
       width = w;
@@ -179,21 +190,10 @@ function barChart(param){
       return chart;
   };
 
-  chart.x = function (x) {
-      if (!arguments.length) return _x;
-      _x = x;
+  chart.data = function (d) {
+      if (!arguments.length) return data;
+      data = d;
       return chart;
-  };
-
-  chart.y = function (y) {
-      if (!arguments.length) return _y;
-      _y = y;
-      return chart;
-  };
-
-  chart.setSeries = function (series) {
-        data = series;
-        return chart;
   };
 
   chart.tooltip = function(color){
@@ -202,7 +202,7 @@ function barChart(param){
       .attr('class', 'd3-tip')
       .offset([-10, 0])
       .html(function(d) {
-        return "<span style='color:" + color + "'>" + d.y + "</span>";
+        return "<span style='color:" + color + "'>" + d + "</span>";
       });
 
     bodyG.call(tip);
