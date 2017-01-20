@@ -9,6 +9,7 @@ function barChart(param){
     margin_right: 30,
     margin_bottom: 30,
     margin_left: 30,
+    rectPadding: 10,
     colors: d3.scale.category10() 
   };
   
@@ -23,8 +24,6 @@ function barChart(param){
       right: setting.margin_right, 
       bottom: setting.margin_bottom
   };
-  //矩形宽度
-  var rectWidth = 35;
   
   chart.render = function () { // <-2A
       if (!svg) {
@@ -94,7 +93,6 @@ function barChart(param){
 
   function defineBodyClip(svg) { // <-2C
       var padding = 5;
-
       svg.append("defs")
         .append("clipPath")
         .attr("id", "body-clip")
@@ -118,7 +116,6 @@ function barChart(param){
   }
 
   function renderBars() {
-      var padding = rectPadding(); // <-A
       bodyG.selectAll("rect.bar")
                   .data(data.y)
               .enter()
@@ -126,7 +123,7 @@ function barChart(param){
               .attr("class", "bar")                   
               .transition()
               .attr("x", function (d,i) {
-                  return xScale(data.x[i]) + padding/2;
+                  return xScale(data.x[i]) + setting.rectPadding/2;
               })
               .attr("y", function (d) { 
                   return yScale(d);
@@ -134,7 +131,9 @@ function barChart(param){
               .attr("height", function (d) { 
                   return yStart() - yScale(d); 
               })
-              .attr("width", rectWidth);
+              .attr("width", function(d){
+                  return Math.floor(quadrantWidth() / data.y.length) - setting.rectPadding;
+              });
               
   }
   
@@ -160,10 +159,6 @@ function barChart(param){
 
   function quadrantHeight() {
       return setting.height - margins.top - margins.bottom;
-  }
-
-  function rectPadding(){
-      return (quadrantWidth() - rectWidth * data.y.length) / data.y.length
   }
 
   chart.width = function (w) {
