@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tree</title>
+    <link rel="stylesheet" type="text/css" href="css/d3.css"/>
+    <script type="text/javascript" src="js/d3.v3.min.js"></script>
+    <style type="text/css">
+        .node circle {
+            cursor: pointer;
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 1.5px;
+        }
+
+        .node text {
+            font-size: 11px;
+        }
+
+        path.link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 1.5px;
+        }
+    </style>
+</head>
+
+<body>
+<script src="js/jquery.min.js"></script>
+<script src="js/d3.v3.min.js"></script>
+<script type="text/javascript" src="js/d3.tree.js"></script>
+<script type="text/javascript">
+   d3.json("data/flare.json?a=1", function (data) {
+        var setting = {
+          target: "body",
+          width: 1600
+        };
+        var chart = treeChart(setting)
+                 .data(data);
+        chart.render();
+   });
+
+</script>
+
+<div class="control-group">
+    <!-- <button onclick="largeFlare()">Complete Flare</button> -->
+    <!-- <button onclick="simpleFlare()">Small Flare</button> -->
+</div>
+
+</body>
+
+</html>
