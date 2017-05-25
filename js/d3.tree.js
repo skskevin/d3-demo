@@ -25,7 +25,7 @@ function treeChart(param) {
 
     chart.render = function () {
         if (!svg) {
-            svg = d3.select("body").append("svg")
+            svg = d3.select(setting.target).append("svg")
                     .attr("height", setting.height)
                     .attr("width", setting.width);
         }
